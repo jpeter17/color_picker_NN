@@ -1,5 +1,4 @@
-from controller import controller
-import view
+from controller import controller 
 import tkinter as tk
 
 if __name__ == '__main__':

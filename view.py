@@ -12,11 +12,14 @@ class buttons(tk.Toplevel):
         tk.Toplevel.__init__(self, master)
         self.buttonframe = tk.Frame(self)
         font = ('Helvetica', '30')
-        print(color)
-        hex = rgb2hex(color[0], color[1], color[2])
-        self.bw = tk.Button(self.buttonframe, width=10, height=2, bg=hex, fg='white', text='white', font=font)
+        self.hex = rgb2hex(color[0], color[1], color[2])
+        self.bw = tk.Button(self.buttonframe, width=10, height=2, bg=self.hex, fg='white', text='white', font=font)
         self.bw.grid(row=0, column=0)
-        self.bb = tk.Button(self.buttonframe, width=10, height=2, bg=hex, fg='black', text='black', font=font)
+        self.bb = tk.Button(self.buttonframe, width=10, height=2, bg=self.hex, fg='black', text='black', font=font)
         self.bb.grid(row=0, column=1)
         self.buttonframe.pack()
 
+    def set_color(self, color):
+        self.hex = rgb2hex(color[0], color[1], color[2])
+        self.bw.config(bg=self.hex)
+        self.bb.config(bg=self.hex)
