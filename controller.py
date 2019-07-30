@@ -8,6 +8,7 @@ class controller():
         self.view = view(root, self.model.color)
         self.view.bw.config(command=self.white_pressed)
         self.view.bb.config(command=self.black_pressed)
+        self.model.test()
 
     def color_changed(self, color):
         self.view.set_color(color)
