@@ -34,9 +34,6 @@ class model():
         for i in range(len(self.node_count) - 1):
             self.z_vectors.append(np.asarray([weights[i] @ z + bias[i]]))
             self.activation_vectors.append(self.sigmoid(self.z_vectors[i]))
-        
-        print('a_v: {}'.format(self.activation_vectors))
-        print('z_v: {}'.format(self.z_vectors))
         return self.activation_vectors[-1]
 
     def train(self, weights, bias):
@@ -71,7 +68,6 @@ class model():
             matrix = self.error_signal_vectors[i] @ self.activation_vectors[-(i + 2)].reshape(1, -1)
             dweights.append(np.asarray(matrix))
 
-        print('dweights: {}'.format(dweights))
         # Update weights and biases
         for i in range(len(self.node_count) - 1):
             self.weights[-(i + 1)] -= dweights[i]
