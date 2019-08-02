@@ -3,10 +3,6 @@ import numpy as np
 class model():
     def __init__(self):
         self.color = np.random.choice(range(256), size=3)
-        self.color_v = []
-        for i in range(self.color.size):
-            self.color_v.append([self.color[i]])
-        self.color_v = np.asarray(self.color_v)
         self.data = [[110, 112, 102, 1, 0], [99, 82, 100, 0, 1]]
         self.z_vectors = []
         self.activation_vectors = []
@@ -33,12 +29,14 @@ class model():
         
     def NN(self, value, weights, bias):
         z = self.sigmoid(value)
-        self.activations_vectors, self.z_vectors = [], []
+        self.activation_vectors, self.z_vectors = [], []
         self.activation_vectors.append(z)
         for i in range(len(self.node_count) - 1):
-            self.z_vectors.append(weights[i] @ z + bias[i])
+            self.z_vectors.append(np.asarray([weights[i] @ z + bias[i]]))
             self.activation_vectors.append(self.sigmoid(self.z_vectors[i]))
         
+        print('a_v: {}'.format(self.activation_vectors))
+        print('z_v: {}'.format(self.z_vectors))
         return self.activation_vectors[-1]
 
     def train(self, weights, bias):
@@ -67,25 +65,17 @@ class model():
             next_err_v = self.weights[-(i + 1)].transpose() @ self.error_signal_vectors[i]
             self.error_signal_vectors.append(next_err_v)
         
-
         # Build change in weight matrices
         dweights = []
         for i in range(len(self.node_count) - 1):
-            matrix = []
-            for k in range(self.error_signal_vectors[i].size):
-                row = []
-                for j in range(self.activation_vectors[-(i + 2)].size):
-                    row.append(self.error_signal_vectors[i][k] * self.activation_vectors[-(i + 2)][j])
-                matrix.append(np.asarray(row).flatten())
+            matrix = self.error_signal_vectors[i] @ self.activation_vectors[-(i + 2)].reshape(1, -1)
             dweights.append(np.asarray(matrix))
 
-        print('weights before update: {}'.format(self.weights))
+        print('dweights: {}'.format(dweights))
+        # Update weights and biases
         for i in range(len(self.node_count) - 1):
             self.weights[-(i + 1)] -= dweights[i]
             self.bias[-(i + 1)] -= self.error_signal_vectors[i]
-
-        print('weights after update: {}'.format(self.weights))
-
 
     def test(self):
         return None
