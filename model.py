@@ -43,7 +43,7 @@ class model():
         self.activation_vectors, self.z_vectors = [], []
         self.activation_vectors.append(z)
         for i in range(len(self.node_count) - 1):
-            self.z_vectors.append(np.asarray([self.weights[i] @ z + self.bias[i]]))
+            self.z_vectors.append(np.asarray([self.weights[i] @ self.activation_vectors[i] + self.bias[i]]))
             self.activation_vectors.append(self.sigmoid(self.z_vectors[i]))
         return self.activation_vectors[-1]
 
